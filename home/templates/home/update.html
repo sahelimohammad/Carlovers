@@ -1,0 +1,13 @@
+{% extends 'base.html'  %}
+
+{% block content %}
+
+<h3 style= color:#ffffff>Post Update</h3><br>
+    <form action="" method="post" novalidate class="col-md-3" enctype="multipart/form-data">
+        {%csrf_token%}
+        {{form.as_p}}
+        <input type="submit" value="Update">
+
+    </form>
+
+{% endblock %}

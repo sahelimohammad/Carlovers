@@ -1,0 +1,86 @@
+{% extends 'base.html'%}
+{% load static %}
+
+{% block content %}
+
+
+<h3 >Hello</h3>
+    <a href="{% url 'account:user_profile' posts.user.id %}" class="btn btn-info">profile</a>
+        <br>
+            {% if request.user.id == posts.user.id%}
+                <br>
+                <a href="{% url 'home:post_delete' posts.id %}" class="btn btn-danger">Delete</a>
+                <a href="{% url 'home:post_update' posts.id %}" class="btn btn-primary">Update</a>
+                <br>
+            {% endif%}
+        <br>
+    <h3><b>{{posts.user.first_name}}-{{posts.updated|date:"Y-M"}}<b></h3>
+    <h4>{{posts.body}}</h4><br>
+    
+    
+    {% if  posts.image1 %}
+       <div style="display: inline-block; margin: 10px;">
+        <img style="width: 10cm; height: 10cm;" class="avatar avatar--xl dev__avatar" src="{{posts.image1.url}}" alt="image" />
+       </div>
+
+    {% if posts.image2 %}
+        <div style="display: inline-block; margin: 10px;">
+            <img style="width: 10cm; height: 10cm;" class="avatar avatar--xl dev__avatar" src="{{posts.image2.url}}" alt="image" />
+        </div> 
+
+    {% if posts.image3 %}
+         <div style="display: inline-block; margin: 10px;">
+            <img style="width: 10cm; height: 10cm;" class="avatar avatar--xl dev__avatar" src="{{posts.image3.url}}" alt="image" />
+        </div> 
+        
+    {% if posts.image4 %}
+    <div style="display: inline-block; margin: 10px;">
+        <img style="width: 10cm; height: 10cm;" class="avatar avatar--xl dev__avatar" src="{{posts.image4.url}}" alt="image" />
+    </div>   
+    {% endif %}
+    {% endif %}   
+    {% endif %}
+    {% endif %}
+
+    <a href="{% url 'home:post_like' posts.id %}" class="{% if can_like %} disabled {% endif %}
+                                                btn btn-info col-md-2">Like {{posts.likes_count}}</a>
+    <a href="{% url 'home:post_dislike' posts.id %}" class="{% if can_dislike %} disabled {% endif %}
+                                        btn btn-info col-md-2">Dislike {{posts.dislikes_count}}</a>
+    <p></p><hr/>
+
+    {% if request.user.is_authenticated %}
+        <form action="" method="post" class="col-md-3" >
+           {% csrf_token %}
+           {{ form.as_p }}
+           <input type="submit" value="Send">
+        </form><br>
+    {% else %}
+        <p class="alert alert-danger">Only logged in users can comment</p>
+    {% endif %}
+
+    {% for comment in comments%}
+        <div class="card bg-dark text-white col-md-7">
+            <p class="card-header">{{comment.user}} | {{comment.created|timesince}}</p>
+            <p class="card-body">{{comment.comment}}</p>
+
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'home:comment_reply' posts.id comment.id %}" method="post" class="col-md-3">
+                    {% csrf_token %}
+                    {{reply_form.as_p}}
+                    <input type="submit" value="Send">
+                </form>
+            {% endif %}
+
+            {% with replies=comment.rcomments.all %}
+                {% for reply in replies %}
+                    <p style="background-color: aliceblue;" class=" p-3 m-2">{{reply.user}} <br/> {{reply.comment}}</p>
+                {% endfor %}
+            {% endwith %}
+
+        </div><br>
+    {% empty %}
+        <p>No comments yet</p>
+    {% endfor %}
+
+
+{% endblock %}

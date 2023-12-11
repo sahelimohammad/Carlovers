@@ -1,0 +1,80 @@
+{% extends 'base.html'  %}
+{% load static %}
+{% block content %}
+
+<h3 class="text-center">Hello!! <br> I am {{user.first_name}} and your welcome</h3>
+
+{% if request.user.id == user.id%}
+<a href="{% url 'home:post_create'  %}" class="btn btn-warning">Create Post</a>
+<a href="{% url 'account:edit_profile'  %}" class="btn btn-info">Edit Profile</a>
+{% endif%}
+
+
+<main class="profile my-md">
+  <div class="container">
+    <div class="layout">
+      <div class="column column--1of3">
+        <div class="card text-center">
+          <div class="card__body dev">
+            <img class="avatar avatar--xl" src="{{user.profile.image.url}}" />
+            <h2 class="dev__name">{{user.first_name}}</h2>
+            <p class="dev__title">{{user.profile.job}}</p>
+            <p class="dev__location">Live in {{user.profile.city}}, {{user.profile.country}}</p>
+
+            {% if request.user.id != user.id and not is_following%}
+              <a href="{% url 'account:user_follow' user.id %}" class="btn btn-primary">Follow</a>
+
+            {% elif  request.user.id != user.id and  is_following%}
+              <a href="{% url 'account:user_unfollow' user.id %}" class="btn btn-primary">Unfollow</a>
+
+            {% endif%}
+
+          </div>
+        </div>
+      </div>
+      <div class="column column--2of3">
+        <div class="devInfo">
+          <h3 class="devInfo__title">Bio</h3>
+          <p class="devInfo__about">
+              {{user.profile.bio}}
+          </p>
+        </div>
+        <div class="devInfo">
+          <h3 class="devInfo__title">Posts</h3>
+
+              {% for post in posts %}
+                  <a href="{{post.get_absolute_url}}" class="card-body" >{{post.body|truncatewords:8}}</a>
+              {% endfor %}
+              <br><br>
+              <div class="list-group" >
+                <form class="col-md-3">
+                  <a style="background-color: deepskyblue;" href="#" class="list-group-item list-group-item-action active" >
+                  Following
+                  </a>
+                  {% for i in following %}
+                    <a href="#" class="list-group-item list-group-item-action"><br>{{i}}</a>
+                  {% endfor %}
+                </form>
+              </div>
+            <br>
+              <div class="list-group" >
+                <form class="col-md-3">
+                  <a style="background-color:red" href="#" class="list-group-item list-group-item-action active" >
+                  Followers
+                  </a>
+                  {% for i in followers %}
+                    <a href="#" class="list-group-item list-group-item-action"><br>{{i}}</a>
+                  {% endfor %}
+                </form>
+              </div>
+            
+        </div>
+      </div>
+    </div>
+  </main>
+
+
+
+
+  
+{% endblock %}

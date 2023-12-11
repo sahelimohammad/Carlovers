@@ -1,0 +1,30 @@
+  
+{% load static %}
+
+<header class="header">
+  <div class="container container--narrow">
+    
+      <img style="width: 3cm; height: 3cm;"  src="{% static 'image/5.png' %}" alt="DevSearch Logo" />
+    
+    
+    <nav class="header__nav">
+      <label for="responsive-menu" class="toggle-menu">
+        <span>Menu</span>
+        <div class="toggle-menu__lines"></div>
+      </label>
+      <ul class="header__menu">
+
+          <li class="header__menuItem"><a class="nav-link active" href="{% url 'home:home'%}">Home</a>
+          {% if request.user.is_authenticated %}
+          <li class="header__menuItem"><a class="nav-link active" href="{% url 'account:user_profile' request.user.id%}">Profile</a>
+          <li class="header__menuItem"><a class="nav-link active" href="{% url 'account:user_logout'%}">Logout</a>
+          {% else %}
+          <li class="header__menuItem"><a class="nav-link active" href="{% url 'account:user_register'%}">Registration</a>
+          <li class="header__menuItem"><a class="nav-link active " href="{% url 'account:user_login'%}" class="btn btn--sub">Login</a>
+          {% endif %}
+
+      </ul>
+    </nav>
+  </div>
+</header>
+
