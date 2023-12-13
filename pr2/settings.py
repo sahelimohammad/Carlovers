@@ -140,10 +140,10 @@ LOGIN_URL = '/account/login/'
 
 # Google account
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'sahelimohammad138@gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = 'hxcklzasxgpueedg'
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'Social Website'
+EMAIL_BACKEND = ''
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_PORT = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = ''
+DEFAULT_FROM_EMAIL = ''
